@@ -1,6 +1,29 @@
 import csv
 from datetime import datetime
-from clint.textui import prompt
+
+class Scope_Data:
+    """Oscilloscope trace data class"""
+
+    def __init__(self, alias, data):
+        self.alias = alias
+        self.data = data
+
+    def save_as_csv(self):
+        """Writes a data list to a CSV file"""
+        
+        print("Saving as .csv")
+
+        # Append the file type if not already defined
+        if self.filename[-4:] != ".csv":
+            self.filename = f"Results/{self.filename}.csv"
+
+        # Open the file and write the data
+        with open(self.filename, "w", newline="") as csvfile:
+            logfile = csv.writer(csvfile)
+            length = len(self.data)
+            for i in range(length):
+                logfile.writerow(self.data[i])
+        
 
 def generate_filename(name, alias=None):
     """Generate a timestamped filename"""
@@ -15,19 +38,3 @@ def generate_filename(name, alias=None):
     else:
         filename = f"{name}_{alias}_{date}_{time}"
     return filename
-
-def save_as_csv(filename, data):
-    """Writes a data list to a CSV file"""
-    
-    print("Saving as .csv")
-
-    # Append the file type if not already defined
-    if filename[-4:] != ".csv":
-        filename = f"Results/{filename}.csv"
-
-    # Open the file and write the data
-    with open(filename, "w", newline="") as csvfile:
-        logfile = csv.writer(csvfile)
-        length = len(data)
-        for i in range(length):
-            logfile.writerow(data[i])

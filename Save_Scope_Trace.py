@@ -1,7 +1,6 @@
 from clint.textui import prompt
-from Executive import generate_filename, save_as_csv
+from Executive import Scope_Data, generate_filename
 from Instrument import load_type, select_instrument
-from Graph import import_scope_trace, save_graph, save_graph_composite
 
 """This program allows the user to save a screenshot or a .csv file of an oscilloscope trace"""
 
@@ -51,11 +50,12 @@ def save_scope_trace():
         if len(ch_dict) == 0:
             print("No channels selected, skipping this step")
         else:
-            # Save each selected channel
+            # Save each selected channel as an object and as a csv
             for ch in ch_dict:
-                filename = generate_filename(proj_name, ch_dict[ch])
                 data = scope.acquire_all(ch)
-                save_as_csv(filename, data)
+                ch_dict[ch] = Scope_Data(ch_dict[ch], data)
+                ch_dict[ch].filename = generate_filename(proj_name, ch_dict[ch])
+                ch_dict[ch].save_as_csv()
 
     print("All finished! Have a nice day.")
 
