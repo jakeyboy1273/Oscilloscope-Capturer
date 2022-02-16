@@ -1,6 +1,7 @@
 from clint.textui import prompt
 from Executive import Scope_Data, generate_filename
 from Instrument import load_type, select_instrument
+from Graph import save_graph, save_graph_composite
 
 """This program allows the user to save a screenshot or a .csv file of an oscilloscope trace"""
 
@@ -57,6 +58,16 @@ def save_scope_trace():
                 ch_dict[ch] = Scope_Data(alias, data)
                 ch_dict[ch].filename = generate_filename(proj_name, alias)
                 ch_dict[ch].save_as_csv()
+
+            # Ask the user if they want to save graphs
+            if prompt.yn("Do you want to save a graph of the trace(s)?"):
+                if len(ch_dict) > 1 and prompt.options(
+                        "How do you want the graphs to be formatted?",
+                        ["All on one figure", "On individual figures"],
+                        ) == 1:
+                        save_graph_composite(ch_dict)
+                else:
+                    save_graph(ch_dict)
 
     print("All finished! Have a nice day.")
 

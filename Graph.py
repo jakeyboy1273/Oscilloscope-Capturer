@@ -1,22 +1,17 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 
-def import_scope_trace(filename):
-        """Import and generate a graph of a scope trace file"""
-
-        # Import the file and name the columns
-        df = pd.read_csv(filename)
-        df.columns = ["Time (s)", "Voltage (V)"]
-
-        # Specify the axes as variables
-        t = df.iloc[:, 0]
-        v = df.iloc[:, 1]
-
-        return t, v
-
 def save_graph(data_dict):
-        pass
+    """Save a graph of the scope data"""
+
+    # Iterate through data_dict and graph all the data
+    for item in data_dict:
+        data = data_dict[item].data
+        plt.plot(data[0], data[1])
+        # TODO: Change this from show to saving the graph as .png
+        plt.show()
+
 
 def save_graph_composite(data_dict):
-        pass
+    # TODO: add this feature 
+        print("save_graph_composite called!")
 

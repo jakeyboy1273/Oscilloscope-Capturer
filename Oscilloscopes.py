@@ -85,7 +85,7 @@ class Oscilloscope(Instrument):
     def acquire_all(self, ch=1):
         """Get all the available raw data from the scope, packet by packet"""
 
-        print("Loading scope channel data...")
+        print(f"Loading scope channel {ch} data...")
 
         # Set the scope parameters as required
         self.resource.write("WAV:SOUR CHAN%s" % ch)
