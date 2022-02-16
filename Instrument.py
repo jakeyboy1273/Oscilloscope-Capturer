@@ -89,9 +89,7 @@ def load_instruments():
             if y_OK == True:
                 i = count_occurrences(instruments, y.type) + 1
                 address = x[1]
-                instruments[str(y.type + " " + str(i))] = y(
-                    y.vendor, y.model, address, rm.open_resource(address), y.type,
-                )
+                instruments[str(y.type + " " + str(i))] = y(address, rm.open_resource(address))
 
     # Raise an exception if no connected instruments have a supporting class
     if instruments == {}:

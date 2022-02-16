@@ -19,7 +19,7 @@ class Oscilloscope(Instrument):
         # Make a list of available channels from the instrument
         ch_dict = {}
         ch_list = []
-        for i in range (1, self.channels):
+        for i in range (1, self.channels + 1):
             ch_list.append(f"Channel {i}")
         ch_list.append("Done")
 
@@ -48,6 +48,7 @@ class Oscilloscope(Instrument):
         """Save a screenshot of the trace to the test PC"""
 
         # Append the directory and file type to the file name
+        # TODO: create the directory if there isn't one
         filename = f"Results/{filename}.png"      
 
         # Pull the data from the scope and save as a .png

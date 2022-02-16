@@ -53,8 +53,9 @@ def save_scope_trace():
             # Save each selected channel as an object and as a csv
             for ch in ch_dict:
                 data = scope.acquire_all(ch)
-                ch_dict[ch] = Scope_Data(ch_dict[ch], data)
-                ch_dict[ch].filename = generate_filename(proj_name, ch_dict[ch])
+                alias = ch_dict[ch]
+                ch_dict[ch] = Scope_Data(alias, data)
+                ch_dict[ch].filename = generate_filename(proj_name, alias)
                 ch_dict[ch].save_as_csv()
 
     print("All finished! Have a nice day.")
