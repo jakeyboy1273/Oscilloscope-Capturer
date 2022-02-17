@@ -39,6 +39,9 @@ def save_scope_trace():
     if not os.path.isdir(results_folder):
         os.makedirs(results_folder)
 
+    # Ensure the oscilloscope is stopped
+    scope.output("STOP")
+
     # If user wants a screenshot (or both)
     if action == 1 or action == 3:
         print("\n\nGenerating a screenshot...")

@@ -44,6 +44,27 @@ class Oscilloscope(Instrument):
         # Return a dictionary of "channel: ch_alias" pairs
         return ch_dict
 
+    def output(self, state_set, wait=False):
+        """Run or stop the scope"""
+
+        output_command = ":%s" % state_set
+        
+        if state_set == "STOP" and wait == True:
+            # Calculate when there will be a full screen of data
+            refresh_time = float(self.resource.query("TIM:SCAL?"))
+            time.sleep(self.delay)
+            # refresh_time * 6 for the screen to update - then press stop
+            time.sleep(refresh_time * 6)
+
+            self.resource.write(output_command)
+            time.sleep(self.delay)
+            # refresh_time * 12 to complete divisions and fill screen
+            time.sleep(refresh_time * 6)
+            
+        # Else, just send the command
+        else:
+            self.resource.write(output_command)       
+
     def capture(self, filename):
         """Save a screenshot of the trace to the test PC"""
 
