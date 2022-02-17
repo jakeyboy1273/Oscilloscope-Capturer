@@ -132,10 +132,15 @@ def select_instrument(inst_dict):
         entry_list.append(entry[1])
     
     # Prompt the user to select from the list
-    inst_select = prompt.options(
-        "Please select the instrument you wish to use",
-        entry_list,
-        )
+    if entry_list > 1:
+        inst_select = prompt.options(
+            "Please select the instrument you wish to use",
+            entry_list,
+            )
+    # Auto-select if there is only one available instrument
+    else:
+        print(f"Auto-selecting the only available instrument: {entry_list[0]}")
+        inst_select = 1
     
     # Return the selected instrument as an object
     inst = inst_dict[inst_list[inst_select-1][0]]

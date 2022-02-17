@@ -1,3 +1,4 @@
+import os
 from clint.textui import prompt
 from Executive import Scope_Data, generate_filename
 from Instrument import load_type, select_instrument
@@ -15,7 +16,6 @@ def save_scope_trace():
     scopes = load_type("Scope")
 
     # Allow the user to select an oscilloscope to use
-    # TODO if there is only 1 item in the list, auto-select it
     scope = select_instrument(scopes)
 
     # Prompt the user to select which action they'd like to complete
@@ -33,6 +33,11 @@ def save_scope_trace():
         "Enter a name for the save files",
         default="Scope_Capture",
     )
+
+    # If there is no "Results" director, make one
+    results_folder = "Results"
+    if not os.path.isdir(results_folder):
+        os.makedirs(results_folder)
 
     # If user wants a screenshot (or both)
     if action == 1 or action == 3:

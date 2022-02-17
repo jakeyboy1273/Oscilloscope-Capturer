@@ -48,7 +48,6 @@ class Oscilloscope(Instrument):
         """Save a screenshot of the trace to the test PC"""
 
         # Append the directory and file type to the file name
-        # TODO: create the directory if there isn't one
         filename = f"Results/{filename}.png"      
 
         # Pull the data from the scope and save as a .png
