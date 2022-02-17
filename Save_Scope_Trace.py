@@ -61,13 +61,17 @@ def save_scope_trace():
 
             # Ask the user if they want to save graphs
             if prompt.yn("Do you want to save a graph of the trace(s)?"):
+                # If there are multiple series, ask the user to save them all as one
                 if len(ch_dict) > 1 and prompt.options(
                         "How do you want the graphs to be formatted?",
                         ["All on one figure", "On individual figures"],
                         ) == 1:
                         save_graph_composite(ch_dict)
+                # Otherwise, save the graph(s) individually
                 else:
-                    save_graph(ch_dict)
+                    for item in ch_dict:
+                        scope_data = ch_dict[item]
+                        save_graph(scope_data)
 
     print("All finished! Have a nice day.")
 
