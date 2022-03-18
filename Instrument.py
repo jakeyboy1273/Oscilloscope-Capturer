@@ -132,7 +132,7 @@ def select_instrument(inst_dict):
         entry_list.append(entry[1])
     
     # Prompt the user to select from the list
-    if entry_list > 1:
+    if len(entry_list) > 1:
         inst_select = prompt.options(
             "Please select the instrument you wish to use",
             entry_list,

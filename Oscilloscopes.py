@@ -82,6 +82,10 @@ class Oscilloscope(Instrument):
     def acquire(self, start, end, parameters):
         """Return a long list of raw datapoints for the scope trace"""
 
+        # TODO: find out if this second setting of the channel is necessary?
+        self.resource.write("WAV:SOUR CHAN%s" % parameters["ch"])
+        time.sleep(self.delay)
+
         # Define the start end end point for the data packet
         self.resource.write(f"WAV:STAR {start}")
         time.sleep(self.delay)
@@ -120,6 +124,7 @@ class Oscilloscope(Instrument):
         raw_preamble = self.resource.query("WAV:PRE?")
         time.sleep(self.delay)
         preamble = raw_preamble.split(",")
+        parameters["ch"] = ch
         parameters["Xinc"] = float(preamble[4])
         parameters["Xor"] = float(preamble[5])
         parameters["Yinc"] = float(preamble[7])

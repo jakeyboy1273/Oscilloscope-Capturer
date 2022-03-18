@@ -9,12 +9,18 @@ def format_graph(fig, title_ch):
 
     # Format the plot and save as a .png
     fig.set_size_inches(32, 18)
-    save_str = f"{title_ch.filename}.png"
+    save_str = f"{title_ch.filename[:-4]}.png"
     plt.savefig(save_str, bbox_inches="tight")
 
 def save_graph(scope_data):
     """Save a graph of the scope data"""
-    fig = plt.plot(scope_data.data[0], scope_data.data[1])
+    x = []
+    y = []
+    for item in scope_data.data:
+        x.append(item[0])
+        y.append(item[1])
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
     format_graph(fig, scope_data)
 
 def fig_format(num_graphs):
@@ -50,13 +56,24 @@ def place_format(narray, index):
 
 
 def save_graph_composite(ch_dict):
+    """Save a composite graph displaying all the channels"""
+
+    # TODO: colour coordinate the graphs to match the channel colours on the scope
     narray = fig_format(len(ch_dict))
     fig, axs = plt.subplots(narray[0], narray[1])
     for i, item in enumerate(ch_dict):
         place = place_format(narray, i)
         scope_data = ch_dict[item]
-        axs[place[0], place[1]].plot(scope_data.data[0], scope_data.data[1])
+        x = []
+        y = []
+        for item in scope_data.data:
+            x.append(item[0])
+            y.append(item[1])
+        if narray[1] > 1:
+            axs[place[0]-1, place[1]-1].plot(x, y)
+        else:
+            axs[place[2]].plot(x, y)
 
-    first_ch = next(iter(dict.values()))
+    first_ch = next(iter(dict.values(ch_dict)))
     format_graph(fig, first_ch)
 
