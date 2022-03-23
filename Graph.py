@@ -59,6 +59,8 @@ def save_graph_composite(ch_dict):
     """Save a composite graph displaying all the channels"""
 
     # TODO: colour coordinate the graphs to match the channel colours on the scope
+    # TODO: don't label the figure with the alias of channel 1 if it is a composite!
+    # TODO: order it from top left to bottom right
     narray = fig_format(len(ch_dict))
     fig, axs = plt.subplots(narray[0], narray[1])
     for i, item in enumerate(ch_dict):

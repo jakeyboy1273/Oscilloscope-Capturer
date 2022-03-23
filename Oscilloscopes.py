@@ -100,7 +100,7 @@ class Oscilloscope(Instrument):
 
         # Use the calculated parameters to translate the raw data to useful
         data = [[None] * 2 for _ in range(len(raw_data))]
-        for i in range(1, len(data)):
+        for i in range(0, len(data)):
             data[i][0] = parameters["Xor"] + (parameters["Xinc"] * (start + i))
             data[i][1] = ((raw_data[i] - parameters["Yref"]) * parameters["Yinc"]) - parameters["Yoffs"]
         
@@ -125,6 +125,7 @@ class Oscilloscope(Instrument):
         time.sleep(self.delay)
         preamble = raw_preamble.split(",")
         parameters["ch"] = ch
+        # parameters["Xinc"] = float(self.resource.query("TIM:SCAL?")) * (12/packets) / self.buf_size
         parameters["Xinc"] = float(preamble[4])
         parameters["Xor"] = float(preamble[5])
         parameters["Yinc"] = float(preamble[7])
@@ -134,13 +135,17 @@ class Oscilloscope(Instrument):
 
         # Iterate through all the data, packet by packet
         data = []
-        packets = self.data_size / self.buf_size
+        sample_rate = float(self.resource.query("ACQ:SRAT?"))
+        waveform_length = float(self.resource.query("TIM:SCAL?")) * self.grid_size
+        memory_depth = sample_rate * waveform_length
+        packets = memory_depth / self.buf_size
         buf_list = [i*self.buf_size + 1 for i in range(int(packets))]
         for item in buf_list:
             ll = item
             ul = item+self.buf_size-1
+            complete = round((ul / memory_depth) * 100, 1)
+            print(f"Loading data packet from {ll} to {ul} (Complete: {complete}%)")
             data_packet = self.acquire(ll, ul, parameters)
-            print(f"Loading data packet from {ll} to {ul}")
             data.extend(data_packet)
         return data
 
@@ -152,8 +157,8 @@ class DS1104Z(Oscilloscope):
     delay = 0.2
 
     channels = 4
-    buf_size = 200000
-    data_size = 1200000
+    buf_size = 250000
+    grid_size = 12
 
     def __init__(self, address, resource):
         super().__init__(
@@ -164,5 +169,5 @@ class DS1104Z(Oscilloscope):
             DS1104Z.delay,
             DS1104Z.channels,
             DS1104Z.buf_size,
-            DS1104Z.data_size,
+            DS1104Z.grid_size,
         )
