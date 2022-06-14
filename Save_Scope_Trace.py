@@ -69,13 +69,16 @@ def save_scope_trace():
 
             # Ask the user if they want to save graphs
             if prompt.yn("Do you want to save a graph of the trace(s)?"):
+
                 # If there are multiple series, ask the user to save them all as one
-                # TODO: don't ask for an alias if there's only one channel
                 if len(ch_dict) > 1 and prompt.options(
                         "How do you want the graphs to be formatted?",
                         ["All on one figure", "On individual figures"],
                         ) == 1:
-                        save_graph_composite(ch_dict)
+
+                        filename = f"Results/{generate_filename(proj_name)}"
+                        save_graph_composite(ch_dict, proj_name, filename, scope.colors)
+
                 # Otherwise, save the graph(s) individually
                 else:
                     for item in ch_dict:

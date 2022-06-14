@@ -7,9 +7,10 @@ class Oscilloscope(Instrument):
 
     type = "Scope"
 
-    def __init__(self, vendor, model, address, resource, delay, channels, buf_size, data_size):
+    def __init__(self, vendor, model, address, resource, delay, channels, colors, buf_size, data_size):
         super().__init__(vendor, model, address, resource, Oscilloscope.type, delay)
         self.channels = channels
+        self.colors = colors
         self.buf_size = buf_size
         self.data_size = data_size
 
@@ -82,10 +83,6 @@ class Oscilloscope(Instrument):
     def acquire(self, start, end, parameters):
         """Return a long list of raw datapoints for the scope trace"""
 
-        # TODO: find out if this second setting of the channel is necessary?
-        self.resource.write("WAV:SOUR CHAN%s" % parameters["ch"])
-        time.sleep(self.delay)
-
         # Define the start end end point for the data packet
         self.resource.write(f"WAV:STAR {start}")
         time.sleep(self.delay)
@@ -157,6 +154,13 @@ class DS1104Z(Oscilloscope):
     delay = 0.2
 
     channels = 4
+    colors = {
+        "1": "yellow",
+        "2": "cyan",
+        "3": "purple",
+        "4": "blue",
+    }
+
     buf_size = 250000
     grid_size = 12
 
@@ -168,6 +172,7 @@ class DS1104Z(Oscilloscope):
             resource,
             DS1104Z.delay,
             DS1104Z.channels,
+            DS1104Z.colors,
             DS1104Z.buf_size,
             DS1104Z.grid_size,
         )
