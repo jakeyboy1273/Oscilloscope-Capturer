@@ -40,7 +40,7 @@ def detect_instruments():
     resource_list = rm.list_resources()
 
     if len(resource_list) == 0:
-        raise Exception("No USB resources were detected")
+        raise IndexError("No USB resources were detected")
 
     # Load and ID query each instrument address, and produce a list of names
     device_list = []
@@ -56,7 +56,7 @@ def detect_instruments():
     
     # Raise an exception if none of the USB resources correspond to connected instruments
     if device_detect == False:
-        raise Exception(f"No connected instruments were detected: {resource_list}")
+        raise Exception(f"No valid instruments were detected: {resource_list}")
 
     # Concatenate device name & address into a 2D instrument_list
     instrument_list = [[None] * 2 for _ in range(len(device_list))]

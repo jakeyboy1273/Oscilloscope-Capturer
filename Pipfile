@@ -9,6 +9,7 @@ pyvisa-py = "*"
 clint = "*"
 pandas = "*"
 matplotlib = "*"
+pyusb = "*"
 
 [dev-packages]
 pep8 = "*"
