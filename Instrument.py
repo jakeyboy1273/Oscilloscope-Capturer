@@ -32,11 +32,10 @@ def count_occurrences(list, x):
             i = +1
     return i
 
-def detect_instruments():
+def detect_instruments(rm):
     """Detect & identify all connected resources, return a list of instruments"""
 
     # Produce a list of USB addresses for all connected instruments
-    rm = pyvisa.ResourceManager()
     resource_list = rm.list_resources()
 
     if len(resource_list) == 0:
@@ -65,18 +64,17 @@ def detect_instruments():
         instrument_list[i][1] = resource_list[i]   
     return instrument_list
     
-def load_instruments():
+def load_instruments(rm):
     """Instantiate all connected instruments as objects of the appropriate instrument classes"""
     
     # Detect all the connected instruments
-    instrument_list = detect_instruments()
+    instrument_list = detect_instruments(rm)
     instruments = {}
 
     # Import the instrument subclasses to identify against
     from Oscilloscopes import Oscilloscope
 
     # Match up connected instruments with supported classes
-    rm = pyvisa.ResourceManager()
     for x in instrument_list:
         for y in find_inheritance(Instrument):
             y_OK = False
@@ -102,7 +100,7 @@ def load_type(type, instruments = None):
 
     # If an instruments dict does not already exist, create one
     if instruments == None:
-        instruments = load_instruments()
+        instruments = load_instruments(pyvisa.ResourceManager())
     
     # Return all instruments of the expected type
     active_type = {}
