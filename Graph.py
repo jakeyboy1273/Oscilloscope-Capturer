@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 
+XLABEL = "Time (s)"
+YLABEL = "Voltage (V)"
+
 def format_graph(fig, title, filename):
     """Format the figure and save as a .png file"""
 
@@ -21,6 +24,8 @@ def save_graph(scope_data):
         y.append(item[1])
     fig, ax = plt.subplots()
     ax.plot(x, y)
+    ax.set_xlabel(XLABEL)
+    ax.set_ylabel(YLABEL)
     format_graph(fig, scope_data.alias, scope_data.filename[:-4])
 
 def fig_format(num_graphs):
@@ -58,6 +63,7 @@ def place_format(narray, index):
 def save_graph_composite(ch_dict, title, filename, scope_colors):
     """Save a composite graph displaying all the channels"""
 
+    # Plot each series in the appropriate place on the figure
     narray = fig_format(len(ch_dict))
     fig, axs = plt.subplots(narray[0], narray[1])
     for i, item in enumerate(ch_dict):
@@ -74,14 +80,16 @@ def save_graph_composite(ch_dict, title, filename, scope_colors):
             if int(item) == int(channel):
                 scope_color = scope_colors[channel]
 
+        # Plot the data on the axis
         if narray[1] > 1:
             ax = axs[place[0]-1, place[1]-1]
-            # axs[place[0]-1, place[1]-1].plot(x, y, color=scope_color)
         else:
             ax = axs[place[2]]
-            # axs[place[2]].plot(x, y, color=scope_color)
         ax.plot(x, y, color=scope_color)
         ax.set_title(ch_dict[item].alias)
-            
+        ax.set_xlabel(XLABEL)
+        ax.set_ylabel(YLABEL)
+
+    # Format the graph      
     format_graph(fig, title, filename)
 

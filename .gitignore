@@ -1,4 +1,6 @@
-Results/*
+# Ignore results files from save_scope_trace
+*.png
+*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

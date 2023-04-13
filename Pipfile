@@ -10,6 +10,7 @@ clint = "*"
 pandas = "*"
 matplotlib = "*"
 pyusb = "*"
+pyinstaller = "*"
 
 [dev-packages]
 pep8 = "*"

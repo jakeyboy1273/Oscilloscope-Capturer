@@ -1,5 +1,5 @@
 from clint.textui import prompt
-import pyvisa
+import pyvisa, pyvisa_py
 
 class Instrument:
     """Generic instrument abstract class"""
